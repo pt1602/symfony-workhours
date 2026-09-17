@@ -4,43 +4,46 @@
 
 {% block body %}
     <div class="row justify-content-center">
-        <div class="col-lg-8">
-            {% if week %}
-                {% set target = weeklyTarget %}
-                {% set hours = week.workHours ?? {} %}
-                {% set progress = target > 0 ? (week.totalHours / target * 100)|round : 0 %}
-                {% set dayLabels = {
-                    monday: 'Montag', tuesday: 'Dienstag', wednesday: 'Mittwoch',
-                    thursday: 'Donnerstag', friday: 'Freitag'
-                } %}
+        {% if week %}
+            {% set target = weeklyTarget %}
+            {% set hours = week.workHours ?? {} %}
+            {% set progress = target > 0 ? (week.totalHours / target * 100)|round : 0 %}
+            {% set dayLabels = {
+                monday: 'Montag', tuesday: 'Dienstag', wednesday: 'Mittwoch',
+                thursday: 'Donnerstag', friday: 'Freitag'
+            } %}
 
+            <div class="col-12">
                 <div class="d-flex flex-wrap align-items-baseline justify-content-between gap-2 mb-3">
                     <h1 class="mb-0">Kalenderwoche {{ week.calenderWeek }}</h1>
                     <a class="btn btn-sm btn-outline-primary" href="{{ path('week.edit') }}">Bearbeiten</a>
                 </div>
+            </div>
 
-                <div class="card mb-4">
+            <div class="col-12 col-lg-6">
+                <div class="card">
                     <div class="card-body">
                         <table class="table table-sm align-middle mb-0">
                             <tbody>
-                                {% for key, label in dayLabels %}
-                                    {% set value = hours[key]|default(0) %}
-                                    <tr{{ value <= 0 ? ' class="text-body-secondary"' }}>
-                                        <th scope="row" class="fw-normal">{{ label }}</th>
-                                        <td class="text-end">{{ value > 0 ? value ~ ' h' : '(' ~ dailyDefaults[loop.index0] ~ ' h)' }}</td>
-                                    </tr>
-                                {% endfor %}
+                            {% for key, label in dayLabels %}
+                                {% set value = hours[key]|default(0) %}
+                                <tr{{ value <= 0 ? ' class="text-body-secondary"' }}>
+                                    <th scope="row" class="fw-normal">{{ label }}</th>
+                                    <td class="text-end">{{ value > 0 ? value ~ ' h' : '(' ~ dailyDefaults[loop.index0] ~ ' h)' }}</td>
+                                </tr>
+                            {% endfor %}
                             </tbody>
                             <tfoot class="border-top">
-                                <tr>
-                                    <th scope="row">Summe</th>
-                                    <td class="text-end fw-bold">{{ week.totalHours }} h</td>
-                                </tr>
+                            <tr>
+                                <th scope="row">Summe</th>
+                                <td class="text-end fw-bold">{{ week.totalHours }} h</td>
+                            </tr>
                             </tfoot>
                         </table>
                     </div>
                 </div>
-
+            </div>
+            <div class="col-12 col-lg-6">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <span>Wochenziel</span>
@@ -50,7 +53,8 @@
                         <div class="progress mb-3" role="progressbar"
                              aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100">
                             <div class="progress-bar{{ week.targetReached ? ' bg-success' }}"
-                                 style="width: {{ progress > 100 ? 100 : progress }}%">{{ progress }}%</div>
+                                 style="width: {{ progress > 100 ? 100 : progress }}%">{{ progress }}%
+                            </div>
                         </div>
 
                         {% if week.targetReached %}
@@ -73,12 +77,12 @@
                         {% endif %}
                     </div>
                 </div>
-            {% else %}
-                <div class="alert alert-info">
-                    Derzeit keine Woche angelegt.
-                    <a href="{{ path('week.add') }}" class="alert-link">Jetzt eine Woche erfassen</a>.
-                </div>
-            {% endif %}
-        </div>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                Derzeit keine Woche angelegt.
+                <a href="{{ path('week.add') }}" class="alert-link">Jetzt eine Woche erfassen</a>.
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

@@ -22,7 +22,7 @@
 <body>
 {% set current_route = app.request.attributes.get('_route') %}
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
+    <div class="container-xxl bd-gutter flex-wrap flex-lg-nowrap">
         <a class="navbar-brand" href="{{ path('home') }}">Workhours</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Navigation umschalten">
@@ -30,11 +30,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link{{ current_route == 'home' ? ' active' }}"
-                        {{ current_route == 'home' ? 'aria-current="page"' }}
-                       href="{{ path('home') }}">Start</a>
-                </li>
                 {% if is_granted('ROLE_USER') %}
                     <li class="nav-item">
                         <a class="nav-link{{ current_route == 'week.index' ? ' active' }}"
@@ -53,11 +48,24 @@
                     </li>
                 {% endif %}
             </ul>
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link{{ current_route == 'app_login' ? ' active' }}"
+                            {{ current_route == 'app_login' ? 'aria-current="page"' }}
+                           href="{{ path('app_login') }}">Login</a>
+                    </li>
+                {% endif %}
+            </ul>
         </div>
     </div>
 </nav>
 <main class="container py-4">
-    <div class="col-lg-8 mx-auto">
+    <div class="col-12">
         {% for label, messages in app.flashes %}
             {% for message in messages %}
                 <div class="alert alert-{{ label }}">

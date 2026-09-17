@@ -4,12 +4,48 @@
 
 {% block body %}
     <div class="row justify-content-center">
-        <div class="col-lg-8">
+        <div class="col-12">
             <h1 class="mb-3">Arbeitszeiten-Tracker</h1>
             <p class="lead">
                 Protokolliere hier deine Arbeitsstunden pro Wochentag und behalte den
                 Überblick, wie viel du diese Woche noch arbeiten musst.
             </p>
+
+            <div class="row g-4 my-1">
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h2 class="h5">Wochen erfassen</h2>
+                            <p class="card-text mb-0">
+                                Trage für jeden Wochentag deine Arbeitsstunden ein und lege
+                                so viele Wochen an, wie du brauchst.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h2 class="h5">Wochenziel im Blick</h2>
+                            <p class="card-text mb-0">
+                                Der Tracker vergleicht deine erfassten Stunden automatisch mit
+                                deinem Wochenziel und zeigt dir den Fortschritt an.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h2 class="h5">Immer aktuell</h2>
+                            <p class="card-text mb-0">
+                                Bereits erfasste Wochen kannst du jederzeit einsehen und
+                                nachträglich bearbeiten.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             {% if is_granted('ROLE_USER') and week %}
                 {% set total = week.totalHours %}
