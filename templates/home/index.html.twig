@@ -11,9 +11,13 @@
                 Überblick, wie viel du diese Woche noch arbeiten musst.
             </p>
 
-            {% if week %}
+            {% if is_granted('ROLE_USER') and week %}
                 {% set total = week.totalHours %}
                 {% set progress = weeklyTarget > 0 ? (total / weeklyTarget * 100)|round : 0 %}
+                {% set dayLabels = {
+                    monday: 'Montag', tuesday: 'Dienstag', wednesday: 'Mittwoch',
+                    thursday: 'Donnerstag', friday: 'Freitag'
+                } %}
 
                 <div class="card my-4">
                     <div class="card-header">Kalenderwoche {{ week.calenderWeek }}</div>
@@ -42,12 +46,6 @@
                                 <span>Noch zu arbeiten</span>
                                 <strong class="text-danger">{{ week.remainingHours }} h</strong>
                             </div>
-                            {% if week.forecastPerOpenWorkday is not null %}
-                                <p class="text-body-secondary mb-0 mt-2">
-                                    Vorausschau: bei {{ week.openWorkdays|length }} offenen Werktag(en)
-                                    sind das {{ week.forecastPerOpenWorkday|number_format(1, ',', '.') }} h pro Tag.
-                                </p>
-                            {% endif %}
                         {% endif %}
                     </div>
                     <div class="card-footer">

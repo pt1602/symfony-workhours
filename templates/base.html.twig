@@ -35,21 +35,23 @@
                         {{ current_route == 'home' ? 'aria-current="page"' }}
                        href="{{ path('home') }}">Start</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link{{ current_route == 'week.index' ? ' active' }}"
-                        {{ current_route == 'week.index' ? 'aria-current="page"' }}
-                       href="{{ path('week.index') }}">Anzeigen</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link{{ current_route == 'week.edit' ? ' active' }}"
-                        {{ current_route == 'week.edit' ? 'aria-current="page"' }}
-                       href="{{ path('week.edit') }}">Bearbeiten</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link{{ current_route == 'week.add' ? ' active' }}"
-                        {{ current_route == 'week.add' ? 'aria-current="page"' }}
-                       href="{{ path('week.add') }}">Anlegen</a>
-                </li>
+                {% if is_granted('ROLE_USER') %}
+                    <li class="nav-item">
+                        <a class="nav-link{{ current_route == 'week.index' ? ' active' }}"
+                            {{ current_route == 'week.index' ? 'aria-current="page"' }}
+                           href="{{ path('week.index') }}">Anzeigen</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{{ current_route == 'week.edit' ? ' active' }}"
+                            {{ current_route == 'week.edit' ? 'aria-current="page"' }}
+                           href="{{ path('week.edit') }}">Bearbeiten</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{{ current_route == 'week.add' ? ' active' }}"
+                            {{ current_route == 'week.add' ? 'aria-current="page"' }}
+                           href="{{ path('week.add') }}">Anlegen</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>
