@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="de" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+    {% block stylesheets %}
+    {% endblock %}
+
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
+
+    {% set frankenphp_hot_reload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
+    {% if frankenphp_hot_reload %}
+        <meta name="frankenphp-hot-reload:url" content="{{ frankenphp_hot_reload }}">
+        <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
+        <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
+    {% endif %}
+</head>
+<body>
+{% set current_route = app.request.attributes.get('_route') %}
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{{ path('home') }}">Workhours</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Navigation umschalten">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link{{ current_route == 'home' ? ' active' }}"
+                        {{ current_route == 'home' ? 'aria-current="page"' }}
+                       href="{{ path('home') }}">Start</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link{{ current_route == 'week.index' ? ' active' }}"
+                        {{ current_route == 'week.index' ? 'aria-current="page"' }}
+                       href="{{ path('week.index') }}">Anzeigen</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link{{ current_route == 'week.edit' ? ' active' }}"
+                        {{ current_route == 'week.edit' ? 'aria-current="page"' }}
+                       href="{{ path('week.edit') }}">Bearbeiten</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link{{ current_route == 'week.add' ? ' active' }}"
+                        {{ current_route == 'week.add' ? 'aria-current="page"' }}
+                       href="{{ path('week.add') }}">Anlegen</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<main class="container py-4">
+    <div class="col-lg-8 mx-auto">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">
+                    {{ message|trans }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+    {% block body %}{% endblock %}
+</main>
+</body>
+</html>

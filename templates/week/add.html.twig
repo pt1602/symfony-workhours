@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Woche anlegen{% endblock %}
+
+{% block body %}
+    <div class="col-lg-8 mx-auto">
+        <h1 class="mb-4">Woche anlegen</h1>
+        <div class="card">
+            <div class="card-body p-4">
+                {{ include('week/_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

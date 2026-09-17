@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Arbeitszeiten-Tracker{% endblock %}
+
+{% block body %}
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="mb-3">Arbeitszeiten-Tracker</h1>
+            <p class="lead">
+                Protokolliere hier deine Arbeitsstunden pro Wochentag und behalte den
+                Überblick, wie viel du diese Woche noch arbeiten musst.
+            </p>
+
+            {% if week %}
+                {% set total = week.totalHours %}
+                {% set progress = weeklyTarget > 0 ? (total / weeklyTarget * 100)|round : 0 %}
+
+                <div class="card my-4">
+                    <div class="card-header">Kalenderwoche {{ week.calenderWeek }}</div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <span>Erfasst</span>
+                            <strong>{{ total }} h</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Wochenziel</span>
+                            <strong>{{ weeklyTarget }} h</strong>
+                        </div>
+
+                        <div class="progress my-3" role="progressbar"
+                             aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar{{ week.targetReached ? ' bg-success' }}"
+                                 style="width: {{ progress > 100 ? 100 : progress }}%">{{ progress }}%</div>
+                        </div>
+
+                        {% if week.targetReached %}
+                            <p class="text-success mb-0">
+                                Wochenziel erreicht – {{ total - weeklyTarget }} h über Plan.
+                            </p>
+                        {% else %}
+                            <div class="d-flex justify-content-between">
+                                <span>Noch zu arbeiten</span>
+                                <strong class="text-danger">{{ week.remainingHours }} h</strong>
+                            </div>
+                            {% if week.forecastPerOpenWorkday is not null %}
+                                <p class="text-body-secondary mb-0 mt-2">
+                                    Vorausschau: bei {{ week.openWorkdays|length }} offenen Werktag(en)
+                                    sind das {{ week.forecastPerOpenWorkday|number_format(1, ',', '.') }} h pro Tag.
+                                </p>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ path('week.index') }}">Woche ansehen</a>
+                        &middot;
+                        <a href="{{ path('week.add') }}">Neue Woche erfassen</a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-info my-4">
+                    Noch keine Woche erfasst.
+                    <a href="{{ path('week.add') }}" class="alert-link">Jetzt die erste Woche anlegen</a>.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

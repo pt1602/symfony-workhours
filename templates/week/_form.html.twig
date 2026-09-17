@@ -1,0 +1,33 @@
+{{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div class="row g-3">
+        <div class="col-6 col-sm-4">
+            {{ form_row(form.calenderWeek) }}
+        </div>
+        <div class="col-6 col-sm-4">
+            {{ form_row(form.year) }}
+        </div>
+    </div>
+
+    <fieldset class="mt-4">
+        <legend class="fs-6 fw-semibold text-body-secondary">
+            Arbeitsstunden pro Wochentag
+        </legend>
+        {{ form_errors(form.workHours) }}
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-3">
+            {% for day in form.workHours %}
+                <div class="col">
+                    {{ form_row(day) }}
+                </div>
+            {% endfor %}
+        </div>
+    </fieldset>
+
+    <div class="mt-4 d-flex gap-2">
+        {{ form_row(form.submit) }}
+        <div class="mb-3">
+            <a class="btn btn-outline-secondary" href="{{ path('week.index') }}">Abbrechen</a>
+        </div>
+    </div>
+{{ form_end(form) }}
