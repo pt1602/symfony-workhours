@@ -63,10 +63,12 @@
                                 <strong class="text-danger">{{ week.remainingHours }} h</strong>
                             </p>
                             {% if week.forecastPerOpenWorkday is not null %}
-                                <p class="text-body-secondary mb-0">
-                                    Vorausschau: bei {{ week.openWorkdays|length }} offenen Werktag(en)
-                                    sind das {{ week.forecastPerOpenWorkday|number_format(1, ',', '.') }} h pro Tag.
-                                </p>
+                                <p class="text-body-secondary mb-1 mt-2">Vorausschau je offenem Tag:</p>
+                                <ul class="text-body-secondary mb-0">
+                                    {% for day, hoursForecast in week.forecastPerOpenWorkday %}
+                                        <li>{{ dayLabels[day] }}: {{ hoursForecast|number_format(1, ',', '.') }} h</li>
+                                    {% endfor %}
+                                </ul>
                             {% endif %}
                         {% endif %}
                     </div>

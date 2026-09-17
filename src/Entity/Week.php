@@ -107,15 +107,38 @@ class Week
      * Forecast: hours per remaining workday needed to still hit the target,
      * or null when the target is met or no workday is left.
      */
-    public function getForecastPerOpenWorkday(): ?float
+    public function getForecastPerOpenWorkday(): ?array
     {
-        $openDays = \count($this->getOpenWorkdays());
+        $openDays = $this->getOpenWorkdays();
+        $openDaysCount = \count($openDays);
 
-        if (0 === $openDays || $this->isTargetReached()) {
+        if ($openDaysCount === 0 || $this->isTargetReached()) {
             return null;
         }
 
-        return $this->getRemainingHours() / $openDays;
+        $defaultWorkHours = self::DEFAULT_WORK_HOURS;
+        $workHoursOnFriday = end($defaultWorkHours);
+        $remainingHours = $this->getRemainingHours();
+        $forecast = [];
+
+        if (in_array('friday', $openDays, true) && array_first($openDays) !== 'friday') {
+            $remainingHours -= $workHoursOnFriday;
+            $openDaysCount--;
+
+            foreach ($openDays as $day) {
+                if ($day !== 'friday') {
+                    $forecast += [$day => $remainingHours / $openDaysCount];
+                } else {
+                    $forecast += [$day => $workHoursOnFriday];
+                }
+            }
+        } else {
+            foreach ($openDays as $day) {
+                $forecast += [$day => $remainingHours / $openDaysCount];
+            }
+        }
+
+        return $forecast;
     }
 
     public function getYear(): ?int
